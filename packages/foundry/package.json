@@ -24,6 +24,7 @@
     "ethers": "~5.7.1",
     "prettier": "~2.8.8",
     "qrcode": "~1.5.3",
+    "solmate": "^6.8.0",
     "toml": "~3.0.0"
   },
   "devDependencies": {

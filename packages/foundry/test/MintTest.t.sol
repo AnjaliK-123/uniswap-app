@@ -1,18 +1,27 @@
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.13;
 
-import "forge-std/Script.sol";
+import "forge-std/Test.sol";
+import "../contracts/mocks/ERC20Mintable.sol";
 import "../contracts/ZuniswapV2Factory.sol";
 import "../contracts/ZuniswapV2Router.sol";
-import "../contracts/mocks/ERC20Mintable.sol";
-import "./DeployHelpers.s.sol";
 
-contract Deploy is ScaffoldETHDeploy {
-    function run() external ScaffoldEthDeployerRunner {
-        // Start broadcasting transactions
-        // vm.startBroadcast();
+contract MintTest is Test {
+    ERC20Mintable public tokenA;
+    address deployer = address(this);
+    // ERC20Mintable public tokenB;
 
-        // Deploy the factory
+    function setUp() public {
+        tokenA = new ERC20Mintable("Token A", "TKA");
+        // tokenB = new ERC20Mintable("Token B", "TKB");
+    }
+
+    function testERC20Mint() public {
+        uint256 tokensToMint = 100 * 10 ** 18;
+        tokenA.mint(tokensToMint, address(this));
+        console.log("Minted Token A to:", address(this));
+    }
+
+    function testDeploy() public {
         ZuniswapV2Factory factory = new ZuniswapV2Factory();
         console.log("Factory deployed to:", address(factory));
 
@@ -39,8 +48,5 @@ contract Deploy is ScaffoldETHDeploy {
         // Create a pair for Token A and Token B
         factory.createPair(address(tokenA), address(tokenB));
         console.log("Pair (Pool) created for Token A and Token B");
-
-        // Stop broadcasting transactions
-        // vm.stopBroadcast();
     }
 }
